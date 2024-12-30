@@ -3,13 +3,19 @@ package com.example.onlinedatabase.ui.nagivation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.onlinedatabase.ui.view.DestinasiDetail
 import com.example.onlinedatabase.ui.view.DestinasiEntry
 import com.example.onlinedatabase.ui.view.DestinasiHome
+import com.example.onlinedatabase.ui.view.DestinasiUpdate
+import com.example.onlinedatabase.ui.view.DetailView
 import com.example.onlinedatabase.ui.view.EntryMhsScreen
 import com.example.onlinedatabase.ui.view.HomeScreen
+import com.example.onlinedatabase.ui.view.UpdateView
 
 @Composable
 fun PengelolaHalaman(navController: NavHostController = rememberNavController()) {
@@ -22,7 +28,7 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
             HomeScreen(
                 navigateToItemEntry = { navController.navigate(DestinasiEntry.route) },
                 onDetailClick = {
-
+                    navController.navigate("${DestinasiDetail.route}/$it")
                 }
             )
         }
@@ -33,7 +39,50 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
                         inclusive = true
                     }
                 }
-            })
+            }
+            )
+        }
+        composable(
+            DestinasiDetail.routeWithArgs,
+            arguments = listOf(
+                navArgument(DestinasiDetail.NIM) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val nim = it.arguments?.getString(DestinasiDetail.NIM)
+            nim?.let { nim ->
+                DetailView(
+                    onBackClick = {
+                        navController.popBackStack()
+                    },
+                    onEditClick = {
+                        navController.navigate("${DestinasiUpdate.route}/$it")
+                    },
+                    nim = nim,
+                    onDeleteClick = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+        }
+        composable(
+            route = DestinasiUpdate.routesWithArg,
+            arguments = listOf(
+                navArgument(DestinasiUpdate.NIM) { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val nim = backStackEntry.arguments?.getString(DestinasiUpdate.NIM)
+            nim?.let {
+                UpdateView(
+                    onBack = { navController.popBackStack() },
+                    onNavigate = {
+                        navController.navigate(DestinasiHome.route) {
+                            popUpTo(DestinasiHome.route) { inclusive = true }
+                        }
+                    },
+                )
+            }
         }
     }
 }

@@ -15,7 +15,7 @@ interface MahasiswaRepository {
 
 class NetworkMahasiswaRepository(
     private val MahasiswaApiService: MahasiswaService
-): MahasiswaRepository {
+) : MahasiswaRepository {
     override suspend fun insertMahasiswa(mahasiswa: Mahasiswa) {
         MahasiswaApiService.insertMahasiswa(mahasiswa)
     }
