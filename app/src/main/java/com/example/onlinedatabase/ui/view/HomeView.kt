@@ -42,6 +42,7 @@ import com.example.onlinedatabase.ui.customwidget.CostumeTopAppBar
 import com.example.onlinedatabase.ui.nagivation.DestinasiNavigasi
 import com.example.onlinedatabase.ui.viewmodel.HomeUiState
 import com.example.onlinedatabase.ui.viewmodel.HomeViewModel
+import com.example.onlinedatabase.ui.viewmodel.PenyediaViewModel
 
 object DestinasiHome : DestinasiNavigasi {
     override val route = "home"
@@ -89,11 +90,7 @@ fun HomeScreen(
                 viewModel.getMhs()
             }
         )
-
-
     }
-
-
 }
 
 
@@ -136,14 +133,8 @@ fun HomeStatus(
 
         is HomeUiState.Error -> OnError(retryAction, modifier = modifier.fillMaxSize())
     }
-
-
 }
 
-
-/**
- * The home screen displaying the loading message.
- */
 @Composable
 fun OnLoading(modifier: Modifier = Modifier) {
     Image(
